@@ -9,7 +9,7 @@
   let svgElement;
   let us;
   let path = d3.geoPath();
-  const setYear = 2000;
+  const setYear = 2000; // change the year to see differences
 
   onMount(async () => {
     // load minimum wage data
@@ -68,6 +68,8 @@
   <h2>Loading...</h2>
 {:else}
 <main>
+  <!-- the full size of this US map is 960 x 600. 
+    If you want to change, you need to use transform (I guess?) -->
   <svg width="960" height="600">
     {#each us as state (state.id)}
       <path d={path(state)}></path>
