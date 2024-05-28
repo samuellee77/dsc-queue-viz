@@ -138,15 +138,69 @@
         .style('font-size', '20px') // Set the font size
         .style('font-weight', 'bold') // Set the font weight
         .text('Federal Minimum Wage Over Time');
+  
+        const tooltip = d3.select('body').append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
+
+
+     // Append circle to show points on the line
+    graph.selectAll('circle')
+        .data(federalWageData)
+        .enter()
+        .append('circle')
+        .attr('cx', d => xScale(new Date(d.year, 0)))
+        .attr('cy', d => yScale(+d.federal_minimum_wage))
+        .attr('r', 5)
+        .style('fill', 'red')
+        .style('cursor', 'pointer')
+        .on('mouseover', handleMouseOver) // No need to pass 'd' explicitly
+        .on('mouseout', handleMouseOut);
+        // .on('mouseover', function(d) { handleMouseOver(d); })
+        // .on('mouseout', handleMouseOut);
+
+    // Function to handle mouseover event
+    function handleMouseOver(d) {
+      tooltip.transition()
+          .duration(500)
+          .style('opacity', 1);
+      tooltip.html(`Year: ${d.year}<br>Federal Minimum Wage: $${d.federal_minimum_wage}`)
+          .style('left', (d3.event.pageX + 10) + 'px')
+          .style('top', (d3.event.pageY - 28) + 'px');
+    }
+
+    // Function to handle mouseout event
+    function handleMouseOut() {
+      tooltip.transition()
+          .duration(500)
+          .style('opacity', 1);
+    }
+
+    // Append circle to show points on the line
+    
   }
+    
+        
+
+
+    
+
+
+ 
+  
 </script>
 
 {#if loading}
   <h2>Loading...</h2>
 {:else}
 <main>
-  <h1>US Minimum Wage by State Visualization</h1>
-  <h2> Federal Minimum Wage Over Time</h2>
+  <h1>U.S. Minimum Wage by State </h1>
+
+  <p>The history of minimum wage legislation in the 
+  United States is a journey marked by social advocacy, economic necessity, and political debate. The concept of a minimum wage was introduced to ensure that workers could earn a living wage, providing for their basic needs without falling into poverty. Over time, this idea evolved, leading to significant legislative milestones.
+  </p>
+
+  <h2> Federal Minimum Wage(1968-2020)</h2>
   <div class="graph-container">
     <button on:click={() => createLineGraph('federal_minimum_wage')}>Federal Minimum Wage</button>
     <svg bind:this={svgLineGraph} width="1000" height="600"></svg>
@@ -162,10 +216,15 @@
       {/each}
     </svg>
   </div>
+  <p>The minimum wage continues to be a contentious issue in U.S. politics. Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending. Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
+
+    In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
+    </p>
 </main>
 {/if}
 
 <style>
+
   path {
     stroke: #000;
     stroke-width: 1;
