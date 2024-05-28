@@ -9,6 +9,7 @@
   let loading = true;
   let svgLineGraph;
   let us;
+  let selectedEntity = "Federal"; // default selected entity
   let path = d3.geoPath();
   let marginLeft = 50;
   let marginRight = 80;
@@ -46,6 +47,8 @@
     us = topojson.feature(usData, usData.objects.states).features;
     loading = false;
 
+    // Create the initial line graph with the default selected entity
+    createLineGraph();
   });
 
   function filterYear(year) {
@@ -68,12 +71,10 @@
     const minWageMax = d3.max(minWageValues);
     return d3.scaleLinear()
       .domain([minWageMin, minWageMax])
-      // colors to be determined
       .range(['#cdebf7', 'blue']);
   }
 
-  function createLineGraph(desiredType) {
-    /*const svg = d3.select('svg');*/
+  function createLineGraph() {
     const svg = d3.select(svgLineGraph);
     const width = 800;
     const height = 600;
@@ -86,7 +87,7 @@
 
     const yScale = d3
         .scaleLinear()
-        .domain([0, d3.max(federalWageData, d => +d.federal_minimum_wage)])
+        .domain([0, d3.max(wageData, d => +d.effective_minimum_wage)])
         .range([height - marginBottom, marginTop]);
     
     // Append the line to the SVG
@@ -95,16 +96,37 @@
 
     const graph = svg.append('g')
         .attr('transform', `translate(${marginLeft}, ${marginTop})`);
+
+    let dataToPlot;
+    let color;
+
+    if (selectedEntity === "Federal") {
+      dataToPlot = federalWageData.map(d => ({
+        year: d.year,
+        wage: +d.federal_minimum_wage
+      }));
+      color = 'blue';
+    } else {
+      dataToPlot = wageData
+        .filter(d => d.state === selectedEntity)
+        .map(d => ({
+          year: d.year,
+          wage: +d.state_minimum_wage
+        }));
+      color = 'blue';
+    }
+
     graph
         .append('path')
-        .datum(federalWageData)
+        .datum(dataToPlot)
         .attr('fill', 'none')
-        .attr('stroke', 'red')
+        .attr('stroke', color)
         .attr('stroke-width', 1)
         .attr('d', d3.line()
             .x(d => xScale(new Date(d.year, 0)))
-            .y(d => yScale(+d.federal_minimum_wage))
+            .y(d => yScale(d.wage))
         );
+
     // append x-axis and y-axis
     graph
         .append('g')
@@ -137,61 +159,40 @@
         .style('text-anchor', 'middle') // Center the text
         .style('font-size', '20px') // Set the font size
         .style('font-weight', 'bold') // Set the font weight
-        .text('Federal Minimum Wage Over Time');
+        .text(`${selectedEntity} Minimum Wage Over Time`);
   
         const tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
-
      // Append circle to show points on the line
     graph.selectAll('circle')
-        .data(federalWageData)
+    .data(dataToPlot)
         .enter()
         .append('circle')
         .attr('cx', d => xScale(new Date(d.year, 0)))
-        .attr('cy', d => yScale(+d.federal_minimum_wage))
+        .attr('cy', d => yScale(d.wage))
         .attr('r', 5)
-        .style('fill', 'red')
+        .style('fill', color)
         .style('cursor', 'pointer')
-        .on('mouseover', handleMouseOver) // No need to pass 'd' explicitly
-        .on('mouseout', handleMouseOut);
-        // .on('mouseover', function(d) { handleMouseOver(d); })
-        // .on('mouseout', handleMouseOut);
-
-    // Function to handle mouseover event
-    function handleMouseOver(d) {
-      tooltip.transition()
-          .duration(500)
-          .style('opacity', 1);
-      tooltip.html(`Year: ${d.year}<br>Federal Minimum Wage: $${d.federal_minimum_wage}`)
-          .style('left', (d3.event.pageX + 10) + 'px')
-          .style('top', (d3.event.pageY - 28) + 'px');
-    }
-
-    // Function to handle mouseout event
-    function handleMouseOut() {
-      tooltip.transition()
-          .duration(500)
-          .style('opacity', 1);
-    }
-
-    // Append circle to show points on the line
-    
+        .on('mouseover', function(d) {
+          tooltip.transition()
+              .duration(500)
+              .style('opacity', 1);
+          tooltip.html(`Year: ${d.year}<br>Minimum Wage: $${d.wage}`)
+              .style('left', (d3.event.pageX + 10) + 'px')
+              .style('top', (d3.event.pageY - 28) + 'px');
+        })
+        .on('mouseout', function() {
+          tooltip.transition()
+              .duration(500)
+              .style('opacity', 0);
+        });
   }
-    
-        
-
-
-    
-
-
- 
-  
 </script>
 
 {#if loading}
-  <h2>Loading...</h2>
+  <p>Loading...</p>
 {:else}
 <main>
   <h1>U.S. Minimum Wage by State </h1>
@@ -201,10 +202,16 @@
   </p>
 
   <h2> Federal Minimum Wage(1968-2020)</h2>
-  <div class="graph-container">
-    <button on:click={() => createLineGraph('federal_minimum_wage')}>Federal Minimum Wage</button>
-    <svg bind:this={svgLineGraph} width="1000" height="600"></svg>
+  <div>
+    <label for="entity-select">Select a State or Federal:</label>
+    <select id="entity-select" bind:value={selectedEntity} on:change={createLineGraph}>
+      <option value="Federal">Federal</option>
+      {#each Array.from(new Set(wageData.map(d => d.state))) as state}
+        <option value={state}>{state}</option>
+      {/each}
+    </select>
   </div>
+  <svg bind:this={svgLineGraph} width="800" height="600"></svg>
   <!-- the full size of this US map is 960 x 600. 
     If you want to change, you need to use transform (I guess?) -->
   <h2>US Minimum Wage by State</h2>
@@ -224,6 +231,16 @@
 {/if}
 
 <style>
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
 
   path {
     stroke: #000;
