@@ -186,7 +186,7 @@
         .on('mouseout', function() {
           tooltip.transition()
               .duration(500)
-              .style('opacity', 0);
+              .style('opacity', 1);
         });
   }
 </script>
