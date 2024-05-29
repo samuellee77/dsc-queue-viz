@@ -15,7 +15,7 @@
   let marginRight = 80;
   let marginTop = 20;
   let marginBottom = 100;
-  const setYear = 2000; // change the year to see differences
+  const setYear = 2020; // change the year to see differences
 
   onMount(async () => {
     // load minimum wage data
@@ -59,14 +59,14 @@
     const stateName = state.properties.name;
     const stateData = filterYear(setYear).find((d) => d.state === stateName);
     if (stateData) {
-      const stateMinimumWage = stateData.effective_minimum_wage;
+      const stateMinimumWage = stateData.state_minimum_wage;
       return colorScale(setYear)(stateMinimumWage);
     }
     return 'white';
   }
 
   function colorScale(year) {
-    const minWageValues = filterYear(year).map((d) => d.effective_minimum_wage);
+    const minWageValues = filterYear(year).map((d) => d.state_minimum_wage);
     const minWageMin = d3.min(minWageValues);
     const minWageMax = d3.max(minWageValues);
     return d3.scaleLinear()
