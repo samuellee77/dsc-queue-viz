@@ -12,9 +12,9 @@
   let selectedEntity = "Federal";
   const setYear = 2020;
 
-  const marginLeft = 50;
-  const marginRight = 80;
-  const marginTop = 20;
+  const marginLeft = 20;
+  const marginRight = 35;
+  const marginTop = 30;
   const marginBottom = 100;
 
   const path = d3.geoPath();
@@ -108,12 +108,10 @@
     let color;
 
     if (selectedEntity === "Federal") {
-      console.log("Correct!!")
       dataToPlot = federalWageData.map(d => ({
         year: d.year,
         wage: +d.federal_minimum_wage
       }));
-      color = 'blue';
     } else {
       dataToPlot = wageData
         .filter(d => d.state === selectedEntity)
@@ -121,14 +119,13 @@
           year: d.year,
           wage: +d.state_minimum_wage
         }));
-      color = 'blue';
     }
 
     graph
         .append('path')
         .datum(dataToPlot)
         .attr('fill', 'none')
-        .attr('stroke', color)
+        .attr('stroke', 'black')
         .attr('stroke-width', 1)
         .attr('d', d3.line()
             .x(d => xScale(new Date(d.year, 0)))
@@ -146,7 +143,7 @@
         .call(d3.axisLeft(yScale));
     graph
         .append('text')
-        .attr('transform', `translate(${width / 2}, ${height - 50})`) // Position at the middle of the x-axis
+        .attr('transform', `translate(${(width - marginLeft) / 2}, ${height - 50})`) // Position at the middle of the x-axis
         .style('text-anchor', 'middle') // Center the text
         .text('Year');
 
@@ -154,8 +151,8 @@
     graph
         .append('text')
         .attr('transform', 'rotate(-90)') // Rotate the text
-        .attr('y', -5) // Position at the start of the y-axis
-        .attr('x', 0 - (height / 2)) // Position at the middle of the y-axis
+        .attr('y', -25) // Position at the start of the y-axis
+        .attr('x', (marginBottom - height) / 2) // Position at the middle of the y-axis
         .attr('dy', '1em') // Adjust the position
         .style('text-anchor', 'middle') // Center the text
         .text('US Minimum Wage ($)');
@@ -181,7 +178,7 @@
         .attr('cx', d => xScale(new Date(d.year, 0)))
         .attr('cy', d => yScale(d.wage))
         .attr('r', 5)
-        .style('fill', color)
+        .style('fill', 'blue')
         .style('cursor', 'pointer')
         .on('mouseover', function(d) {
           tooltip.transition()
@@ -204,13 +201,13 @@
 {:else}
   <div class='container'>
     <main>
-      <h1 class="body-header">U.S. Minimum Wage by State </h1>
+      <h1 class="body-header">U.S. Minimum Wage by State</h1>
 
       <p class="body-text">The history of minimum wage legislation in the 
       United States is a journey marked by social advocacy, economic necessity, and political debate. The concept of a minimum wage was introduced to ensure that workers could earn a living wage, providing for their basic needs without falling into poverty. Over time, this idea evolved, leading to significant legislative milestones.
       </p>
 
-      <h2 class="body-header"> Federal Minimum Wage(1968-2020)</h2>
+      <h2 class="body-header"> Federal Minimum Wage (1968-2020)</h2>
       <div>
         <label for="entity-select">Select a State or Federal:</label>
         <select id="entity-select" bind:value={selectedEntity} on:change={createLineGraph}>
