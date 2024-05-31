@@ -9,47 +9,54 @@
   let loading = true;
   let svgLineGraph;
   let us;
-  let selectedEntity = "Federal"; // default selected entity
-  let path = d3.geoPath();
-  let marginLeft = 50;
-  let marginRight = 80;
-  let marginTop = 20;
-  let marginBottom = 100;
-  const setYear = 2020; // change the year to see differences
+  let selectedEntity = "Federal";
+  const setYear = 2020;
+
+  const marginLeft = 50;
+  const marginRight = 80;
+  const marginTop = 20;
+  const marginBottom = 100;
+
+  const path = d3.geoPath();
 
   onMount(async () => {
-    // load minimum wage data
-    const response = await fetch('data.csv');
-    const csvData = await response.text();
-
-    // change datatypes
-    wageData = Papa.parse(csvData, { header: true }).data.map((d) => {
-      return {
-        year: +d.year,
-        state: d.state,
-        state_minimum_wage: +d.state_minimum_wage,
-        state_minimum_wage_2020_dollars: +d.state_minimum_wage_2020_dollars,
-        federal_minimum_wage: +d.federal_minimum_wage,
-        federal_minimum_wage_2020_dollars: +d.federal_minimum_wage_2020_dollars,
-        effective_minimum_wage: +d.effective_minimum_wage,
-        effective_minimum_wage_2020_dollars: +d.effective_minimum_wage_2020_dollars,
-        cpi_average: +d.cpi_average
-      };
-    });
-    
-    // load federal minimum wage data
-    const federalResponseJson = await fetch('federal_minimum_wage.json').then((response) => response.json());
-    federalWageData = federalResponseJson;
-
-    // load US map data
-    const usResponse = await fetch('counties-albers-10m.json');
-    const usData = await usResponse.json();
-    us = topojson.feature(usData, usData.objects.states).features;
+    await loadData();
     loading = false;
-
-    // Create the initial line graph with the default selected entity
     createLineGraph();
   });
+
+  async function loadData() {
+    wageData = await loadCSVData('data.csv');
+    federalWageData = await loadJSONData('federal_minimum_wage.json');
+    us = await loadTopoJSONData('counties-albers-10m.json');
+  }
+
+  async function loadCSVData(url) {
+    const response = await fetch(url);
+    const csvData = await response.text();
+    return Papa.parse(csvData, { header: true }).data.map(d => ({
+      year: +d.year,
+      state: d.state,
+      state_minimum_wage: +d.state_minimum_wage,
+      state_minimum_wage_2020_dollars: +d.state_minimum_wage_2020_dollars,
+      federal_minimum_wage: +d.federal_minimum_wage,
+      federal_minimum_wage_2020_dollars: +d.federal_minimum_wage_2020_dollars,
+      effective_minimum_wage: +d.effective_minimum_wage,
+      effective_minimum_wage_2020_dollars: +d.effective_minimum_wage_2020_dollars,
+      cpi_average: +d.cpi_average,
+    }));
+  }
+
+  async function loadJSONData(url) {
+    const response = await fetch(url);
+    return response.json();
+  }
+
+  async function loadTopoJSONData(url) {
+    const response = await fetch(url);
+    const usData = await response.json();
+    return topojson.feature(usData, usData.objects.states).features;
+  }
 
   function filterYear(year) {
     return wageData.filter((d) => d.year === year);
@@ -101,6 +108,7 @@
     let color;
 
     if (selectedEntity === "Federal") {
+      console.log("Correct!!")
       dataToPlot = federalWageData.map(d => ({
         year: d.year,
         wage: +d.federal_minimum_wage
@@ -150,7 +158,7 @@
         .attr('x', 0 - (height / 2)) // Position at the middle of the y-axis
         .attr('dy', '1em') // Adjust the position
         .style('text-anchor', 'middle') // Center the text
-        .text('Price (USD)');
+        .text('US Minimum Wage ($)');
 
     // Append graph title
     graph
@@ -161,9 +169,9 @@
         .style('font-weight', 'bold') // Set the font weight
         .text(`${selectedEntity} Minimum Wage Over Time`);
   
-        const tooltip = d3.select('body').append('div')
+    const tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
-        .style('opacity', 0);
+        .style('opacity', 1);
 
      // Append circle to show points on the line
     graph.selectAll('circle')
@@ -179,55 +187,55 @@
           tooltip.transition()
               .duration(500)
               .style('opacity', 1);
-          tooltip.html(`Year: ${d.year}<br>Minimum Wage: $${d.wage}`)
-              .style('left', (d3.event.pageX + 10) + 'px')
-              .style('top', (d3.event.pageY - 28) + 'px');
+          tooltip.html(`Year: ${d}<br>Minimum Wage: $${d}`)
+            .style('left', (d.pageX + 10) + 'px')
+            .style('top', (d.pageY - 28) + 'px');
         })
         .on('mouseout', function() {
           tooltip.transition()
               .duration(500)
               .style('opacity', 1);
         });
-  }
+  };
 </script>
 
 {#if loading}
   <p>Loading...</p>
 {:else}
-<main>
-  <h1>U.S. Minimum Wage by State </h1>
+  <div class='container'>
+    <main>
+      <h1 class="body-header">U.S. Minimum Wage by State </h1>
 
-  <p>The history of minimum wage legislation in the 
-  United States is a journey marked by social advocacy, economic necessity, and political debate. The concept of a minimum wage was introduced to ensure that workers could earn a living wage, providing for their basic needs without falling into poverty. Over time, this idea evolved, leading to significant legislative milestones.
-  </p>
+      <p class="body-text">The history of minimum wage legislation in the 
+      United States is a journey marked by social advocacy, economic necessity, and political debate. The concept of a minimum wage was introduced to ensure that workers could earn a living wage, providing for their basic needs without falling into poverty. Over time, this idea evolved, leading to significant legislative milestones.
+      </p>
 
-  <h2> Federal Minimum Wage(1968-2020)</h2>
-  <div>
-    <label for="entity-select">Select a State or Federal:</label>
-    <select id="entity-select" bind:value={selectedEntity} on:change={createLineGraph}>
-      <option value="Federal">Federal</option>
-      {#each Array.from(new Set(wageData.map(d => d.state))) as state}
-        <option value={state}>{state}</option>
-      {/each}
-    </select>
+      <h2 class="body-header"> Federal Minimum Wage(1968-2020)</h2>
+      <div>
+        <label for="entity-select">Select a State or Federal:</label>
+        <select id="entity-select" bind:value={selectedEntity} on:change={createLineGraph}>
+          <option value="Federal">Federal</option>
+          {#each Array.from(new Set(wageData.map(d => d.state))) as state}
+            <option value={state}>{state}</option>
+          {/each}
+        </select>
+      </div>
+      <svg bind:this={svgLineGraph} width="800" height="600"></svg>
+      <h2 class="body-header">US Minimum Wage by State</h2>
+      <div class='graph-container'>
+        <svg width="960" height="600">
+          {#each us as state (state.id)}
+            <path d={path(state)}></path>
+            <path d={path(state)} fill={getColor(state)}></path>
+          {/each}
+        </svg>
+      </div>
+      <p class="body-text">The minimum wage continues to be a contentious issue in U.S. politics. Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending. Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
+
+        In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
+        </p>
+    </main>
   </div>
-  <svg bind:this={svgLineGraph} width="800" height="600"></svg>
-  <!-- the full size of this US map is 960 x 600. 
-    If you want to change, you need to use transform (I guess?) -->
-  <h2>US Minimum Wage by State</h2>
-  <div class='graph-container'>
-    <svg width="960" height="600">
-      {#each us as state (state.id)}
-        <path d={path(state)}></path>
-        <path d={path(state)} fill={getColor(state)}></path>
-      {/each}
-    </svg>
-  </div>
-  <p>The minimum wage continues to be a contentious issue in U.S. politics. Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending. Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
-
-    In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
-    </p>
-</main>
 {/if}
 
 <style>
@@ -245,5 +253,22 @@
   path {
     stroke: #000;
     stroke-width: 1;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .body-text {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-align: left;
   }
 </style>
