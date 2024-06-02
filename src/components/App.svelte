@@ -5,6 +5,7 @@
   import ChoroplethMap from './ChoroplethMap.svelte';
   import Loading from './Loading.svelte';
   import Intro from './Intro.svelte';
+  import TwoLineGraphs from './TwoLineGraphs.svelte';
   import './style.css';
 
   let loading = true;
@@ -22,6 +23,7 @@
   <div class="container">
     <Intro />
     <LineGraph {federalWageData} {wageData} />
+    <TwoLineGraphs {wageData} /> 
     <ChoroplethMap {usData} {wageData} />
   </div>
 {/if}

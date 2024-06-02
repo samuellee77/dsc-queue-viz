@@ -143,4 +143,3 @@
         transition: opacity 0.5s;
     }
 </style>
-  

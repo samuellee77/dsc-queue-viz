@@ -30,6 +30,16 @@
         return 'white';
     }
 
+    //change text color to white when state background color is #166788 and #104e66
+    function getTextColor(state) {
+        const stateName = state.properties.name;
+        const stateData = filterYear(setYear).find((d) => d.state === stateName);
+        if (stateMinimumWage >= 10) {
+            return "white";
+        }
+        return "black";
+    }
+
     //Show color scale
     let legend;
 
@@ -66,7 +76,7 @@
     onMount(createLegend);
 </script>
 
-<h2 class="body-header">US Minimum Wage by State</h2>
+<h2 class="body-header">US Minimum Wage by State as of 2020</h2>
 <svg width="960" height="600">
     {#each usData as state (state.id)}
         <path d={path(state)} fill={getColor(state)}></path>
@@ -74,10 +84,10 @@
             <text 
                 x={path.centroid(state)[0]} 
                 y={path.centroid(state)[1]} 
-                text-anchor="middle" 
-                fill="black" 
-                font-size="10">
-                {filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
+                text-anchor="middle"
+                fill={getTextColor}
+                font-size="20">
+                ${filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
             </text>
     {/if}
     {/each}
