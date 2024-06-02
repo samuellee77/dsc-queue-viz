@@ -78,7 +78,7 @@
         .attr('x', (margin.bottom - height) / 2) // Position at the middle of the y-axis
         .attr('dy', '1em') // Adjust the position
         .style('text-anchor', 'middle') // Center the text
-        .text('US Minimum Wage ($)');
+        .text('US Minimum Wage (USD)');
       svgElement
         .append('text')
         .attr('transform', `translate(${(width - margin.left) / 2}, 20)`) // Position at the middle of the x-axis

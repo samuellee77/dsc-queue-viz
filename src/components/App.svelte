@@ -5,6 +5,7 @@
   import ChoroplethMap from './ChoroplethMap.svelte';
   import Loading from './Loading.svelte';
   import Intro from './Intro.svelte';
+  import './style.css';
 
   let loading = true;
   let wageData, federalWageData, usData;

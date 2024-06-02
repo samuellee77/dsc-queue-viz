@@ -30,6 +30,7 @@
         return 'white';
     }
 
+    //Show color scale
     let legend;
 
     function createLegend() {
@@ -69,6 +70,16 @@
 <svg width="960" height="600">
     {#each usData as state (state.id)}
         <path d={path(state)} fill={getColor(state)}></path>
+        {#if filterYear(setYear).find(d => d.state === state.properties.name)}
+            <text 
+                x={path.centroid(state)[0]} 
+                y={path.centroid(state)[1]} 
+                text-anchor="middle" 
+                fill="black" 
+                font-size="10">
+                {filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
+            </text>
+    {/if}
     {/each}
 </svg>
 
