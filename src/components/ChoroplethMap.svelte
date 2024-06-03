@@ -71,6 +71,64 @@
         });
     }
 
+    const stateAbbreviations = {
+        'Alabama': 'AL',
+        'Alaska': 'AK',
+        'Arizona': 'AZ',
+        'Arkansas': 'AR',
+        'California': 'CA',
+        'Colorado': 'CO',
+        'Connecticut': 'CT',
+        'Delaware': 'DE',
+        'Florida': 'FL',
+        'Georgia': 'GA',
+        'Hawaii': 'HI',
+        'Idaho': 'ID',
+        'Illinois': 'IL',
+        'Indiana': 'IN',
+        'Iowa': 'IA',
+        'Kansas': 'KS',
+        'Kentucky': 'KY',
+        'Louisiana': 'LA',
+        'Maine': 'ME',
+        'Maryland': 'MD',
+        'Massachusetts': 'MA',
+        'Michigan': 'MI',
+        'Minnesota': 'MN',
+        'Mississippi': 'MS',
+        'Missouri': 'MO',
+        'Montana': 'MT',
+        'Nebraska': 'NE',
+        'Nevada': 'NV',
+        'New Hampshire': 'NH',
+        'New Jersey': 'NJ',
+        'New Mexico': 'NM',
+        'New York': 'NY',
+        'North Carolina': 'NC',
+        'North Dakota': 'ND',
+        'Ohio': 'OH',
+        'Oklahoma': 'OK',
+        'Oregon': 'OR',
+        'Pennsylvania': 'PA',
+        'Rhode Island': 'RI',
+        'South Carolina': 'SC',
+        'South Dakota': 'SD',
+        'Tennessee': 'TN',
+        'Texas': 'TX',
+        'Utah': 'UT',
+        'Vermont': 'VT',
+        'Virginia': 'VA',
+        'Washington': 'WA',
+        'West Virginia': 'WV',
+        'Wisconsin': 'WI',
+        'Wyoming': 'WY',
+        'District of Columbia': 'DC',
+        'Guam': 'GU',
+        'Puerto Rico': 'PR',
+        'U.S. Virgin Islands': 'VI'
+    };
+
+
     onMount(createLegend);
 </script>
 
@@ -80,41 +138,18 @@
     {#each usData as state (state.id)}
         <path d={path(state)} fill={getColor(state)}></path>
         {#if filterYear(setYear).find(d => d.state === state.properties.name)}
-            <!-- State label -->
-            {#if state.properties.name === 'Louisiana'}
-                <text 
-                    x={path.centroid(state)[0] - 20} 
-                    y={path.centroid(state)[1] - 20} 
-                    text-anchor="lower"
-                    font-size="7"
-                    font-weight="bold"
-                    fill="#FF0000">
-                    {state.properties.name}
-                </text>
-            {:else}
-                <text 
-                    x={path.centroid(state)[0] - 12} 
-                    y={path.centroid(state)[1] - 10} 
-                    text-anchor="lower"
-                    font-size="7"
-                    font-weight="bold"
-                    fill="#FF0000">
-                    {state.properties.name}
-                </text>
-            {/if}
-
-           
-
-
-
-            <!-- Wage data and manual adjustments -->
             <text 
                 x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} 
                 y={path.centroid(state)[1] + manualAdjustments[state.properties.name][1]} 
                 text-anchor="middle"
                 fill={getTextColor(state)}
                 font-size="14">
-                ${filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
+                <tspan x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} dy="0">
+                    {stateAbbreviations[state.properties.name]}
+                </tspan>
+                <tspan x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} dy="1.2em">
+                    ${filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
+                </tspan>
             </text>
             {#if manualAdjustments[state.properties.name][2]}
                 <path
@@ -129,33 +164,6 @@
         {/if}
     {/each}
 </svg>
-
-
-<!-- <svg width="960" height="600">
-    {#each usData as state (state.id)}
-        <path d={path(state)} fill={getColor(state)}></path>
-        {#if filterYear(setYear).find(d => d.state === state.properties.name)}
-            <text 
-                x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} 
-                y={path.centroid(state)[1] + manualAdjustments[state.properties.name][1]} 
-                text-anchor="middle"
-                fill={getTextColor(state)}
-                font-size="14">
-                ${filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
-            </text>
-            {#if manualAdjustments[state.properties.name][2]}
-                <path
-                    d={`M ${path.centroid(state)[0]},${path.centroid(state)[1]} 
-                    L ${path.centroid(state)[0] + manualAdjustments[state.properties.name][0] + manualAdjustments[state.properties.name][3]},
-                    ${path.centroid(state)[1] + manualAdjustments[state.properties.name][1] + manualAdjustments[state.properties.name][4]}`}
-                    stroke="black"
-                    stroke-width="1"
-                    fill="none"
-                />
-            {/if}
-        {/if}
-    {/each}
-</svg> -->
 
 <svg bind:this={legend} width="300" height="200"></svg>
 
