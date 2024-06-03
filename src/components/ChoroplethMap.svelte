@@ -74,8 +74,64 @@
     onMount(createLegend);
 </script>
 
-<h2 class="body-header">US Minimum Wage by State as of 2020</h2>
+<h2 class="body-header">Washington Leads with the Highest Minimum Wage as of 2020</h2>
+
 <svg width="960" height="600">
+    {#each usData as state (state.id)}
+        <path d={path(state)} fill={getColor(state)}></path>
+        {#if filterYear(setYear).find(d => d.state === state.properties.name)}
+            <!-- State label -->
+            {#if state.properties.name === 'Louisiana'}
+                <text 
+                    x={path.centroid(state)[0] - 20} 
+                    y={path.centroid(state)[1] - 20} 
+                    text-anchor="lower"
+                    font-size="7"
+                    font-weight="bold"
+                    fill="#FF0000">
+                    {state.properties.name}
+                </text>
+            {:else}
+                <text 
+                    x={path.centroid(state)[0] - 12} 
+                    y={path.centroid(state)[1] - 10} 
+                    text-anchor="lower"
+                    font-size="7"
+                    font-weight="bold"
+                    fill="#FF0000">
+                    {state.properties.name}
+                </text>
+            {/if}
+
+           
+
+
+
+            <!-- Wage data and manual adjustments -->
+            <text 
+                x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} 
+                y={path.centroid(state)[1] + manualAdjustments[state.properties.name][1]} 
+                text-anchor="middle"
+                fill={getTextColor(state)}
+                font-size="14">
+                ${filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
+            </text>
+            {#if manualAdjustments[state.properties.name][2]}
+                <path
+                    d={`M ${path.centroid(state)[0]},${path.centroid(state)[1]} 
+                    L ${path.centroid(state)[0] + manualAdjustments[state.properties.name][0] + manualAdjustments[state.properties.name][3]},
+                    ${path.centroid(state)[1] + manualAdjustments[state.properties.name][1] + manualAdjustments[state.properties.name][4]}`}
+                    stroke="black"
+                    stroke-width="1"
+                    fill="none"
+                />
+            {/if}
+        {/if}
+    {/each}
+</svg>
+
+
+<!-- <svg width="960" height="600">
     {#each usData as state (state.id)}
         <path d={path(state)} fill={getColor(state)}></path>
         {#if filterYear(setYear).find(d => d.state === state.properties.name)}
@@ -99,7 +155,7 @@
             {/if}
         {/if}
     {/each}
-</svg>
+</svg> -->
 
 <svg bind:this={legend} width="300" height="200"></svg>
 
