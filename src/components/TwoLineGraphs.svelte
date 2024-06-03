@@ -100,7 +100,7 @@
     <div class="graph-description"> </div>
 
     <svg bind:this={svgOhio} width="400" height="300"></svg>
-    <div class="graph-description">Ohio00000</div>
+    <div class="graph-description"></div>
 
 </div>
 
