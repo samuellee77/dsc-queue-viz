@@ -53,7 +53,7 @@
       svgElement.append('path')
         .datum(dataToPlot)
         .attr('fill', 'none')
-        .attr('stroke', 'red')
+        .attr('stroke', '#dc143c')
         .attr('stroke-width', 2.5)
         .attr('d', line);
   
@@ -94,7 +94,7 @@
             .attr('cx', d => xScale(new Date(d.year, 0)))
             .attr('cy', d => yScale(d.wage))
             .attr('r', 4)
-            .style('fill', 'blue')
+            .style('fill', '#4169e1')
             .style('cursor', 'pointer')
             .on('mouseover', function(event, d) {
                 tooltip.style.opacity = 1; // Show tooltip
