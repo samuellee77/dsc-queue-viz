@@ -1,10 +1,11 @@
 <script>
     import * as d3 from 'd3';
-    import * as topojson from 'topojson-client';
+    import { manualAdjustments } from './utils.js';
+    import { onMount } from 'svelte';
+
     export let usData;
     export let wageData;
     const setYear = 2020;
-  
     const path = d3.geoPath();
 
     function filterYear(year) {
@@ -12,9 +13,6 @@
     }
 
     function colorScale(year) {
-        const minWageValues = filterYear(year).map((d) => d.state_minimum_wage);
-        const minWageMin = d3.min(minWageValues);
-        const minWageMax = d3.max(minWageValues);
         return d3.scaleLinear()
         .domain([0, 7.25, 9, 10, 12, 14])
         .range(['#def2fa', '#68c2e7', '#24a7dc', '#1b81aa', '#166788', '#104e66']);
@@ -34,7 +32,8 @@
     function getTextColor(state) {
         const stateName = state.properties.name;
         const stateData = filterYear(setYear).find((d) => d.state === stateName);
-        if (stateMinimumWage >= 10) {
+        const stateMinimumWage = stateData.state_minimum_wage;
+        if (stateMinimumWage >= 11 && !manualAdjustments[state.properties.name][2]) {
             return "white";
         }
         return "black";
@@ -72,7 +71,6 @@
         });
     }
 
-    import { onMount } from 'svelte';
     onMount(createLegend);
 </script>
 
@@ -82,14 +80,24 @@
         <path d={path(state)} fill={getColor(state)}></path>
         {#if filterYear(setYear).find(d => d.state === state.properties.name)}
             <text 
-                x={path.centroid(state)[0]} 
-                y={path.centroid(state)[1]} 
+                x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} 
+                y={path.centroid(state)[1] + manualAdjustments[state.properties.name][1]} 
                 text-anchor="middle"
-                fill={getTextColor}
-                font-size="20">
+                fill={getTextColor(state)}
+                font-size="14">
                 ${filterYear(setYear).find(d => d.state === state.properties.name).state_minimum_wage}
             </text>
-    {/if}
+            {#if manualAdjustments[state.properties.name][2]}
+                <path
+                    d={`M ${path.centroid(state)[0]},${path.centroid(state)[1]} 
+                    L ${path.centroid(state)[0] + manualAdjustments[state.properties.name][0] + manualAdjustments[state.properties.name][3]},
+                    ${path.centroid(state)[1] + manualAdjustments[state.properties.name][1] + manualAdjustments[state.properties.name][4]}`}
+                    stroke="black"
+                    stroke-width="1"
+                    fill="none"
+                />
+            {/if}
+        {/if}
     {/each}
 </svg>
 
