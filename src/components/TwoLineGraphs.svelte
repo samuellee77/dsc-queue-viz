@@ -58,9 +58,11 @@
         svgElement.append('text')
             .attr('transform', `translate(${(width + margin.left) / 2}, 20)`)
             .style('text-anchor', 'middle')
-            .style('font-size', '16px')
+            .style('font-size', '12px')
             .style('font-weight', 'bold')
-            .text(`${state} Minimum Wage Over Time`);
+            .text(state === 'Alabama' ? 'Alabama Minimum Wages Stays at $0' : 
+  state === 'Ohio' ? 'Ohio Minimum Wage Increases $4.05 between 2006 and 2007' : 
+  `${state} Minimum Wage Over Time`);
 
         svgElement.selectAll('rect')
             .data(stateData)
@@ -95,14 +97,18 @@
 <div class="tooltip" bind:this={tooltip}>Tooltip</div>
 <div class="line-graphs-container">
     <svg bind:this={svgAlabama} width="400" height="300"></svg>
+    <div class="graph-description"> </div>
+
     <svg bind:this={svgOhio} width="400" height="300"></svg>
+    <div class="graph-description">Ohio00000</div>
+
 </div>
 
 <style>
     .line-graphs-container {
         display: flex;
         justify-content: space-around;
-        align-items: center;
+        align-items: flex-start;;
         width: 100%;
         margin: 20px 0;
     }
@@ -119,4 +125,11 @@
         opacity: 0;
         transition: opacity 0.5s;
     }
+    .graph-description {
+    margin-top: 300px; /* Adjust the top margin as needed */
+}
+.graph-container {
+    text-align: center; /* Center the content within each container */
+}
+
 </style>
