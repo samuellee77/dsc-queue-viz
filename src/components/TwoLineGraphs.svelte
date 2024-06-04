@@ -2,7 +2,7 @@
     import * as d3 from 'd3';
     export let wageData;
     let svgAlabama;
-    let svgOhio;
+    let svgCA;
     let tooltip;
 
     // Function to create a line graph for a specific state
@@ -61,7 +61,7 @@
             .style('font-size', '12px')
             .style('font-weight', 'bold')
             .text(state === 'Alabama' ? 'Alabama Minimum Wages Stays at $0' : 
-  state === 'Ohio' ? 'Ohio Minimum Wage Increases $4.05 between 2006 and 2007' : 
+  state === 'California' ? "California's Greatest Wage Increase between 2017 and 2020": 
   `${state} Minimum Wage Over Time`);
 
         svgElement.selectAll('rect')
@@ -89,8 +89,8 @@
         if (svgAlabama && wageData) {
             createLineGraph(d3.select(svgAlabama), 'Alabama');
         }
-        if (svgOhio && wageData) {
-            createLineGraph(d3.select(svgOhio), 'Ohio');
+        if (svgCA && wageData) {
+            createLineGraph(d3.select(svgCA), 'California');
         }
     }
 </script>
@@ -99,8 +99,7 @@
     <svg bind:this={svgAlabama} width="400" height="300"></svg>
     <div class="graph-description"> </div>
 
-    <svg bind:this={svgOhio} width="400" height="300"></svg>
-    <div class="graph-description"></div>
+    <svg bind:this={svgCA} width="400" height="300"></svg>
 
 </div>
 
