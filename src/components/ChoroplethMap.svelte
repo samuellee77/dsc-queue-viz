@@ -33,7 +33,7 @@
         const stateName = state.properties.name;
         const stateData = filterYear(setYear).find((d) => d.state === stateName);
         const stateMinimumWage = stateData.state_minimum_wage;
-        if (stateMinimumWage >= 11 && !manualAdjustments[state.properties.name][2]) {
+        if (stateMinimumWage > 10.1 && !manualAdjustments[state.properties.name][2]) {
             return "white";
         }
         return "black";
