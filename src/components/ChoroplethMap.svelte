@@ -14,7 +14,7 @@
 
     function colorScale(year) {
         return d3.scaleThreshold()
-            .domain([0.01, 7.25, 8.99, 9.99, 11.99, 12])
+            .domain([0.01, 7.26, 8.99, 9.99, 11.99, 12])
             .range(['#e0f7ff', '#abd9e9', '#74add1', '#4575b4', '#313695', '#24286f']);
     }
 
