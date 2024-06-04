@@ -167,9 +167,7 @@
 
 <svg bind:this={legend} width="300" height="200"></svg>
 
-<p class="body-text">The minimum wage continues to be a contentious issue in U.S. politics. Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending. Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
-
-    In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
+<p class="body-text"> Washington leads with the highest minimun wage out of the 50 states as of 2020. Washington is one of the states that adjusts the minimum wage based on inflation.Moreover, the state has a strong labor movement advocating for better wages and working conditions. States that don't have a state mandated minimum wage law include Alabama, South Carolina, Mississippi, Louisiana, and Tennessee.These are indicated as $0 on the map.
 </p>
 
 <style>
