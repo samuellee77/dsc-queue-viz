@@ -106,8 +106,14 @@
                 tooltip.style.opacity = 0;
             });
     }
-
 </script>
+
+<h2 class='body-header'>Our Visualizations</h2>
+<p class='body-text'>
+    The following line graph displays the minimum wage over time for the selected entity (Federal or State).
+    <br>
+    Hover over the data points to see the exact values.
+</p>
 <div class="tooltip" bind:this={tooltip}>Tooltip</div>
 <div>
     <label for="entity-select">Select a State or Federal:</label>
@@ -120,26 +126,3 @@
 </div>
 
 <svg bind:this={svg} width="800" height="600"></svg>
-  
-<style>
-    svg {
-        display: block;
-        margin: auto;
-    }
-    select {
-        margin: 20px 0;
-    }
-    .tooltip {
-        position: absolute;
-        text-align: center;
-        width: 120px;
-        padding: 8px;
-        font: 12px sans-serif;
-        background: lightsteelblue;
-        border: 0px;
-        border-radius: 8px;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.5s;
-    }
-</style>

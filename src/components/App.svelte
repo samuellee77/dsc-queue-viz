@@ -28,17 +28,3 @@
     <ChoroplethMap {usData} {wageData} />
   </div>
 {/if}
-
-
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-  }
-</style>

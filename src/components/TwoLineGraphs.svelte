@@ -102,45 +102,17 @@
 <div class="line-graphs-container">
     <div class="left">
       <h2 style="text-align: center;">Alabama</h2>
-      <p>Alabama doesn't have state-mandated minimum wage laws. Instead, they adhere to the federal minimum wage set by the Fair Labor Standards Act (FLSA). </p>
+      <p class='body-text'>
+        Alabama doesn't have state-mandated minimum wage laws.
+        Instead, they adhere to the federal minimum wage set by the Fair Labor Standards Act (FLSA).
+    </p>
     </div>
     <div class="right">
       <h2 style="text-align: center;">California</h2>
-      <p>California experienced the greatest increase in the state minimum wage over a three-year period due to a variety of factors including legislative initiatives, economic conditions, social and political pressure, and public support.</p>
+      <p class='body-text'>
+        California experienced the greatest increase in the state minimum wage over a three-year period 
+        due to a variety of factors including legislative initiatives, economic conditions, 
+        social and political pressure, and public support.
+      </p>
     </div>
 </div>
-
-<style>
-    .line-graphs-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
-        width: 100%;
-        margin: 10px 0;
-    }
-    .tooltip {
-        position: absolute;
-        text-align: center;
-        width: 120px;
-        padding: 8px;
-        font: 12px sans-serif;
-        background: lightsteelblue;
-        border: 0px;
-        border-radius: 8px;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.5s;
-    }
-    .left {
-        width: 400px;
-        float: left;
-        text-align: left;
-        margin-top: 0px;
-    }
-    .right {
-        width: 400px;
-        float: left;
-        text-align: left;
-        margin-top: 0px;
-    }
-</style>

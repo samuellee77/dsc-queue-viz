@@ -12,7 +12,7 @@
     return wageData.filter((d) => d.year === year);
     }
 
-    function colorScale(year) {
+    function colorScale() {
         return d3.scaleThreshold()
             .domain([0.01, 7.26, 8.99, 9.99, 11.99, 12])
             .range(['#e0f7ff', '#abd9e9', '#74add1', '#4575b4', '#313695', '#24286f']);
@@ -23,7 +23,7 @@
         const stateData = filterYear(setYear).find((d) => d.state === stateName);
         if (stateData) {
             const stateMinimumWage = stateData.state_minimum_wage;
-            return colorScale(setYear)(stateMinimumWage);
+            return colorScale()(stateMinimumWage);
         }
         return 'white';
     }
@@ -73,11 +73,11 @@
     onMount(createLegend);
 </script>
 
-<h2 class="body-header">Washington Leads with the Highest Minimum Wage as of 2020</h2>
+<h2 class="body-header">Washington Leads with the Highest State Minimum Wage as of 2020</h2>
 
 <svg width="960" height="600">
     {#each usData as state (state.id)}
-        <path d={path(state)} fill={getColor(state)}></path>
+        <path d={path(state)} fill={getColor(state)} class='border'></path>
         {#if filterYear(setYear).find(d => d.state === state.properties.name)}
             <text 
                 x={path.centroid(state)[0] + manualAdjustments[state.properties.name][0]} 
@@ -108,26 +108,17 @@
 
 <svg bind:this={legend} width="300" height="200"></svg>
 
-<p class="body-text">Washington leads with the highest minimun wage out of the 50 states as of 2020. Washington is one of the states that adjusts the minimum wage based on inflation.Moreover, the state has a strong labor movement advocating for better wages and working conditions. States that don't have a state mandated minimum wage law include Alabama, South Carolina, Mississippi, Louisiana, and Tennessee.These are indicated as $0 on the map.
+<p class='body-text'>
+    Washington leads with the highest minimum wage out of the 50 states as of 2020. 
+    Washington is one of the states that adjusts the minimum wage based on inflation. 
+    Moreover, the state has a strong labor movement advocating for better wages and working conditions.
+    States that don't have a state mandated minimum wage law include Alabama, South Carolina, Mississippi, Louisiana, and Tennessee.
+    These are indicated as $0 on the map.
 </p>
-<p class="body-text">The minimum wage continues to be a contentious issue in U.S. politics. Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending. Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
-    In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
+<p class='body-text'>
+    The minimum wage continues to be a contentious issue in U.S. politics.
+    Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending.
+    Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
+    In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. 
+    From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
 </p>
-
-<style>
-    path {
-        stroke: #000;
-        stroke-width: 1;
-    }
-    svg {
-        display: block;
-        margin: auto;
-    }
-    .body-text {
-        font-size: 1.2rem;
-        line-height: 1.5;
-        margin-bottom: 20px;
-        text-align: left;
-    }
-</style>
-  

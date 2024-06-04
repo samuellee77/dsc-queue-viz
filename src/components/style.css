@@ -11,3 +11,70 @@ h1, h2, h3, h4, h5, h6 {
 p, text {
     font-family: 'Roboto', sans-serif;
 }
+
+.body-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: auto;
+    margin-bottom: 10px;
+    text-align: left;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+svg {
+    display: block;
+    margin: auto;
+}
+
+select {
+    margin: 20px 0;
+}
+
+.border {
+    stroke: #000;
+    stroke-width: 1;
+}
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 120px;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.line-graphs-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.left {
+    width: 400px;
+    float: left;
+    text-align: left;
+    margin-top: 0px;
+}
+
+.right {
+    width: 400px;
+    float: left;
+    text-align: left;
+    margin-top: 0px;
+}
