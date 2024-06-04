@@ -13,9 +13,9 @@
     }
 
     function colorScale(year) {
-        return d3.scaleLinear()
-        .domain([0, 7.25, 9, 10, 12, 14])
-        .range(['#e0f7ff', '#abd9e9', '#74add1', '#4575b4', '#313695', '#24286f']);
+        return d3.scaleThreshold()
+            .domain([0.01, 7.25, 8.99, 9.99, 11.99, 12])
+            .range(['#e0f7ff', '#abd9e9', '#74add1', '#4575b4', '#313695', '#24286f']);
     }
 
     function getColor(state) {
@@ -45,8 +45,8 @@
     function createLegend() {
         const legendData = [
         { range: "$0", color: '#e0f7ff' },
-        { range: "Below $7.25", color: '#abd9e9' },
-        { range: "$7.25 - $8.99", color: '#74add1' },
+        { range: "$0.01 - $7.25", color: '#abd9e9' },
+        { range: "$7.26 - $8.99", color: '#74add1' },
         { range: "$9.00 - $9.99", color:  '#4575b4'},
         { range: "$10.00 - $11.99", color:  '#313695'},
         { range: "$12.00 and above", color: '#24286f'}
