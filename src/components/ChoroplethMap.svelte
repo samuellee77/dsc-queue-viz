@@ -1,6 +1,6 @@
 <script>
     import * as d3 from 'd3';
-    import { manualAdjustments } from './utils.js';
+    import { manualAdjustments, stateAbbreviations } from './utils.js';
     import { onMount } from 'svelte';
 
     export let usData;
@@ -70,65 +70,6 @@
             .text(d.range);
         });
     }
-
-    const stateAbbreviations = {
-        'Alabama': 'AL',
-        'Alaska': 'AK',
-        'Arizona': 'AZ',
-        'Arkansas': 'AR',
-        'California': 'CA',
-        'Colorado': 'CO',
-        'Connecticut': 'CT',
-        'Delaware': 'DE',
-        'Florida': 'FL',
-        'Georgia': 'GA',
-        'Hawaii': 'HI',
-        'Idaho': 'ID',
-        'Illinois': 'IL',
-        'Indiana': 'IN',
-        'Iowa': 'IA',
-        'Kansas': 'KS',
-        'Kentucky': 'KY',
-        'Louisiana': 'LA',
-        'Maine': 'ME',
-        'Maryland': 'MD',
-        'Massachusetts': 'MA',
-        'Michigan': 'MI',
-        'Minnesota': 'MN',
-        'Mississippi': 'MS',
-        'Missouri': 'MO',
-        'Montana': 'MT',
-        'Nebraska': 'NE',
-        'Nevada': 'NV',
-        'New Hampshire': 'NH',
-        'New Jersey': 'NJ',
-        'New Mexico': 'NM',
-        'New York': 'NY',
-        'North Carolina': 'NC',
-        'North Dakota': 'ND',
-        'Ohio': 'OH',
-        'Oklahoma': 'OK',
-        'Oregon': 'OR',
-        'Pennsylvania': 'PA',
-        'Rhode Island': 'RI',
-        'South Carolina': 'SC',
-        'South Dakota': 'SD',
-        'Tennessee': 'TN',
-        'Texas': 'TX',
-        'Utah': 'UT',
-        'Vermont': 'VT',
-        'Virginia': 'VA',
-        'Washington': 'WA',
-        'West Virginia': 'WV',
-        'Wisconsin': 'WI',
-        'Wyoming': 'WY',
-        'District of Columbia': 'DC',
-        'Guam': 'GU',
-        'Puerto Rico': 'PR',
-        'U.S. Virgin Islands': 'VI'
-    };
-
-
     onMount(createLegend);
 </script>
 
@@ -167,13 +108,20 @@
 
 <svg bind:this={legend} width="300" height="200"></svg>
 
-<p class="body-text"> Washington leads with the highest minimun wage out of the 50 states as of 2020. Washington is one of the states that adjusts the minimum wage based on inflation.Moreover, the state has a strong labor movement advocating for better wages and working conditions. States that don't have a state mandated minimum wage law include Alabama, South Carolina, Mississippi, Louisiana, and Tennessee.These are indicated as $0 on the map.
+<p class="body-text">Washington leads with the highest minimun wage out of the 50 states as of 2020. Washington is one of the states that adjusts the minimum wage based on inflation.Moreover, the state has a strong labor movement advocating for better wages and working conditions. States that don't have a state mandated minimum wage law include Alabama, South Carolina, Mississippi, Louisiana, and Tennessee.These are indicated as $0 on the map.
+</p>
+<p class="body-text">The minimum wage continues to be a contentious issue in U.S. politics. Supporters claim that higher wages are necessary to reduce poverty and stimulate economic growth by increasing consumer spending. Opponents, however, argue that substantial increases could lead to job losses and higher prices for goods and services, potentially harming small businesses.
+    In conclusion, the history of minimum wage legislation in the United States is a testament to the evolving understanding of fair labor standards and economic justice. From its early inception to contemporary debates, the minimum wage remains a crucial element of the nation's labor policy, reflecting broader social and economic challenges.
 </p>
 
 <style>
     path {
         stroke: #000;
         stroke-width: 1;
+    }
+    svg {
+        display: block;
+        margin: auto;
     }
     .body-text {
         font-size: 1.2rem;
