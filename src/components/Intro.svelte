@@ -1,4 +1,5 @@
 <h1 class="body-header">Visualizing U.S. Minimum Wage</h1>
+<p>by Samuel Lee, Nian-Cin Wang, and Jasmine Hong</p>
 <h2 class="body-header">Introduction</h2>
 <p class='body-text'>
     The history of minimum wage legislation in the United States is a journey 

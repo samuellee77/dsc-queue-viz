@@ -1,5 +1,7 @@
 # Visualizing U.S. Minimum Wage 1968-2020
 
+by Samuel Lee, Nian-Cin Wang, and Jasmine Hong
+
 ## Introduction
 
 The history of minimum wage legislation in the United States is a journey marked by social advocacy, economic necessity, and political debate. The concept of a minimum wage was introduced to ensure that workers could earn a living wage, providing for their basic needs without falling into poverty. Over time, this idea evolved, leading to significant legislative milestones.
