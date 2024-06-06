@@ -17,10 +17,12 @@ This project visualizes the history and evolution of minimum wage laws in the Un
 ## Visualizations
 
 ### Line Graph: Minimum Wage Over Time
+
 - Federal minimum wage from 1968 to 2020.
 - Comparison of minimum wage trends in Alabama and California.
 
 ### Choropleth Map: State Minimum Wages in 2020
+
 - Visual representation of minimum wages across the U.S. states.
 - Highlights Washington with the highest state minimum wage and states with no state-mandated minimum wage.
 
