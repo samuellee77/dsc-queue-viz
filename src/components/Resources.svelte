@@ -11,6 +11,9 @@
     </li>
 </ol>
 
+<h2 class='body-header'>Demo Video</h2>
+<a href='https://www.youtube.com/watch?v=ww3M330CPc0'>https://www.youtube.com/watch?v=ww3M330CPc0</a>
+
 <style>
     .resource-list {
         text-align: left;

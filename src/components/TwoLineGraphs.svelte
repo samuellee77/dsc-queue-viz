@@ -94,6 +94,10 @@
         }
     }
 </script>
+
+<p class="body-text">
+    Below are two line charts for the minimum wage changes over time for Alabama and California that we found interesting.
+</p>
 <div class="tooltip" bind:this={tooltip}>Tooltip</div>
 <div class="line-graphs-container">
     <svg bind:this={svgAlabama} width="400" height="300"></svg>
