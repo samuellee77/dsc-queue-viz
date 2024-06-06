@@ -30,5 +30,5 @@
     However, the minimum wage debate regained momentum in the 2000s.
     The latest increase in federal minimum wage is from The Fair Minimum Wage Act of 2007, signed by President George W. Bush.
     It raised the federal minimum wage to $7.25 per hour, effective in 2009.
-    (<a href='https://webapps.dol.gov/elaws/faq/esa/flsa/001.htm' target='_blank'>4</a>)
+    (<a href='https://webapps.dol.gov/elaws/faq/esa/flsa/001.htm' target='_blank'>3</a>)
 </p>
